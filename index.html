@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- 要先引入vue.js 否则报错 -->
+    <script src="https://cdn.bootcss.com/vue/2.5.2/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+
+<body>
+    <div id='app'>
+
+        <el-date-picker v-model="dateParam" type="daterange" :picker-options="pickerOptions" start-placeholder="开始日期"
+            end-placeholder="结束日期">
+        </el-date-picker>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    dateParam: '',
+                    timeOptionRange: '',
+                    pickerOptions: {
+                        onPick: time => {
+                            if (time.minDate && !time.maxDate) {
+                                this.timeOptionRange = time.minDate;
+                                // this.$message.info('温馨提示 时间跨度不能超过七天内')
+                                this.$message.warning('温馨提示 时间跨度不能超过七天内')
+                            }
+                            if (time.maxDate) {
+                                this.timeOptionRange = null;
+                            }
+                        },
+                        disabledDate: time => {
+                            const timeOptionRange = this.timeOptionRange;
+                            // const secondNum = 60 * 60 * 24 * 1 * 1000 ;
+                            const secondNum = 24 * 60 * 60 * 1000 * 6;
+                            if (timeOptionRange) {
+                                return (time.getTime() > timeOptionRange.getTime() + secondNum || time.getTime() <
+                                    timeOptionRange.getTime() - secondNum);
+                            }
+                            return false;
+                        }
+                    }
+
+
+                }
+            },
+            watch: {
+            },
+            methods: {
+            }
+
+        })
+    </script>
+</body>
+
+</html>
+<style>
+</style>
